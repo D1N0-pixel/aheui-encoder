@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-toChange = input()
+import sys 
 
 result = "발박따밭따빠싹발받따다빠싼발박따밝다다빠싿발받따다빠쌀발박따밝다다빠쌈발받따다쌉"
 
@@ -83,21 +83,42 @@ def afterSmall(margin):
         result += "다"
     result += "맣"
 
-for i in toChange:
-    if ord(i) >= 32 and ord(i) < 48:
-        beforeNum(40 - ord(i))
-    elif ord(i) >= 48 and ord(i) < 64:
-        afterNum(55 - ord(i))
-    elif ord(i) >= 64 and ord(i) < 80:
-        beforeCap(72 - ord(i))
-    elif ord(i) >= 80 and ord(i) < 96:
-        afterCap(87 - ord(i))
-    elif ord(i) >= 96 and ord(i) < 112:
-        beforeSmall(104 - ord(i))
-    elif ord(i) >= 112 and ord(i) < 127:
-        afterSmall(119 - ord(i))
+def newLine():
+    global result
+    result += "발박따맣"
+
+def encode(toChange):
+    global result
+    for i in toChange:
+        if ord(i) >= 32 and ord(i) < 48:
+            beforeNum(40 - ord(i))
+        elif ord(i) >= 48 and ord(i) < 64:
+            afterNum(55 - ord(i))
+        elif ord(i) >= 64 and ord(i) < 80:
+            beforeCap(72 - ord(i))
+        elif ord(i) >= 80 and ord(i) < 96:
+            afterCap(87 - ord(i))
+        elif ord(i) >= 96 and ord(i) < 112:
+            beforeSmall(104 - ord(i))
+        elif ord(i) >= 112 and ord(i) < 127:
+            afterSmall(119 - ord(i))
+        else:
+            print("지원되지 않는 문자가 포함되어 있습니다")
+            exit()
+
+def main():
+    global result
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], 'r') as file:
+            toChange = file.read().split('\n')
+            for i in toChange:
+                encode(i)
+                newLine()
+            result = result[:-4]
     else:
-        print("지원되지 않는 문자가 포함되어 있습니다")
-        exit()
-result += "희"
-print(result)
+        encode(input())
+    result += "희"
+    print(result)
+
+if __name__ == "__main__":
+    main()
