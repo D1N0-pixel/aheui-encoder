@@ -1,7 +1,47 @@
 # -*- coding:utf-8 -*-
 import sys 
 
-result = "발박따밭따빠싹발받따다빠싼발박따밝다다빠싿발받따다빠쌀발박따밝다다빠쌈발받따다쌉"
+result = str()
+bN = False
+aN = False
+bC = False
+aC = False
+bS = False
+aS = False
+
+def whichChar(toChange):
+    global result, bN, aN, bC, aC, bS, aS
+    for i in toChange:
+        if ord(i) >= 32 and ord(i) < 48:
+            bN = True
+        elif ord(i) >= 48 and ord(i) < 64:
+            aN = True
+        elif ord(i) >= 64 and ord(i) < 80:
+            bC = True
+        elif ord(i) >= 80 and ord(i) < 96:
+            aC = True
+        elif ord(i) >= 96 and ord(i) < 112:
+            bS = True
+        elif ord(i) >= 112 and ord(i) < 127:
+            aS = True
+        else:
+            print("지원되지 않는 문자가 포함되어 있습니다")
+            exit()
+
+def useChar():
+    global result, bN, aN, bC, aC, bS, aS
+    if bN:
+        result += "발밣따싹"
+    if aN:
+        result += "발밦다발따싼"
+    if bC:
+        result += "밢밣따싿"
+    if aC:
+        result += "밢밢따밦다쌀"
+    if bS:
+        result += "밦밝다밣따쌈"
+    if aS:
+        result += "밢밣다밝따쌉"
 
 def transNum(num):
     if num == 0:
@@ -102,9 +142,6 @@ def encode(toChange):
             beforeSmall(104 - ord(i))
         elif ord(i) >= 112 and ord(i) < 127:
             afterSmall(119 - ord(i))
-        else:
-            print("지원되지 않는 문자가 포함되어 있습니다")
-            exit()
 
 def main():
     global result
@@ -112,11 +149,20 @@ def main():
         with open(sys.argv[1], 'r') as file:
             toChange = file.read().split('\n')
             for i in toChange:
+                whichChar(i)
+            useChar()
+                
+        with open(sys.argv[1], 'r') as file:
+            toChange = file.read().split('\n')
+            for i in toChange:
                 encode(i)
                 newLine()
             result = result[:-4]
     else:
-        encode(input())
+        toChange = input()
+        whichChar(toChange)
+        useChar()
+        encode(toChange)
     result += "희"
     print(result)
 
