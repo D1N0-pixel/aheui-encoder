@@ -8,6 +8,7 @@ bC = False
 aC = False
 bS = False
 aS = False
+kor = False
 
 def whichChar(toChange):
     global result, bN, aN, bC, aC, bS, aS
@@ -24,6 +25,8 @@ def whichChar(toChange):
             bS = True
         elif ord(i) >= 112 and ord(i) < 127:
             aS = True
+        elif ord(i) > 10000:
+            kor = True
         else:
             print("지원되지 않는 문자가 포함되어 있습니다")
             exit()
@@ -33,15 +36,17 @@ def useChar():
     if bN:
         result += "발밣따싹"
     if aN:
-        result += "발밦다발따싼"
+        result += "발밦다발따싺"
     if bC:
-        result += "밢밣따싿"
+        result += "밢밣따싻"
     if aC:
-        result += "밢밢따밦다쌀"
+        result += "밢밢따밦다싼"
     if bS:
-        result += "밦밝다밣따쌈"
+        result += "밦밝다밣따싽"
     if aS:
-        result += "밢밣다밝따쌉"
+        result += "밢밣다밝따싾"
+    if kor:
+        result += "발반따빠빠싿빠빠따빠쌀따빠쌁따쌂"
 
 def transNum(num):
     if num == 0:
@@ -62,6 +67,8 @@ def transNum(num):
         return "밝"
     elif num == 8:
         return "밣"
+    elif num == 9:
+        return "밢"
 
 def beforeNum(margin):
     global result
@@ -75,7 +82,7 @@ def beforeNum(margin):
 
 def afterNum(margin):
     global result
-    result += "산빠"
+    result += "삮빠"
     result += transNum(abs(margin))
     if margin > 0:
         result += "타"
@@ -85,7 +92,7 @@ def afterNum(margin):
 
 def beforeCap(margin):
     global result
-    result += "삳빠"
+    result += "삯빠"
     result += transNum(abs(margin))
     if margin > 0:
         result += "타"
@@ -95,7 +102,7 @@ def beforeCap(margin):
 
 def afterCap(margin):
     global result
-    result += "살빠"
+    result += "산빠"
     result += transNum(abs(margin))
     if margin > 0:
         result += "타"
@@ -105,7 +112,7 @@ def afterCap(margin):
 
 def beforeSmall(margin):
     global result
-    result += "삼빠"
+    result += "삱빠"
     result += transNum(abs(margin))
     if margin > 0:
         result += "타"
@@ -115,12 +122,32 @@ def beforeSmall(margin):
 
 def afterSmall(margin):
     global result
-    result += "삽빠"
+    result += "삲빠"
     result += transNum(abs(margin))
     if margin > 0:
         result += "타"
     elif margin < 0:
         result += "다"
+    result += "맣"
+
+def kor(letter):
+    global result
+    num = list(map(lambda x: int(x), list(str(letter))))
+    ten = ['삶','삵','살','삳']
+    zero = 0
+    for i in range(len(num)-1):
+        if num[i] != 0:
+            result += ten[i]
+            result += "빠쌃삷"
+            if num[i] != 1:
+                result += transNum(num[i])
+                result += "따"
+        else:
+            zero += 1
+    if num[4] != 0:
+        result += transNum(num[4])
+        result += "다"
+    result += "다" * (3 - zero)
     result += "맣"
 
 def newLine():
@@ -142,6 +169,8 @@ def encode(toChange):
             beforeSmall(104 - ord(i))
         elif ord(i) >= 112 and ord(i) < 127:
             afterSmall(119 - ord(i))
+        elif ord(i) > 10000 and ord(i) < 100000:
+            kor(ord(i))
 
 def main():
     global result
